@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>English Dictionary</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    input, button {
+      padding: 10px;
+      font-size: 1rem;
+      margin-top: 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #resultado {
+      margin-top: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>English Dictionary</h1>
+
+  <label for="palabra">Enter a word in English:</label>
+  <input type="text" id="palabra" placeholder="e.g. computer, cat, tree" />
+
+  <button onclick="buscarDefinicion()">Search</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    async function buscarDefinicion() {
+      const palabra = document.getElementById('palabra').value.trim();
+      const resultado = document.getElementById('resultado');
+
+      if (!palabra) {
+        resultado.innerHTML = "<p><strong>Please enter a word.</strong></p>";
+        return;
+      }
+
+      resultado.innerHTML = "Searching...";
+
+      try {
+        const res = await fetch('/definicion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ palabra })
+        });
+
+        const data = await res.json();
+
+        if (data.definiciones && data.definiciones.length > 0) {
+          resultado.innerHTML = `
+            <h3>${data.palabra}</h3>
+            <ul>
+              ${data.definiciones.map(def => `<li>${def}</li>`).join('')}
+            </ul>
+            <p style="font-size: 0.9em; color: gray;">Source: <a href="https://dictionaryapi.dev" target="_blank">dictionaryapi.dev</a></p>
+          `;
+        } else {
+          resultado.innerHTML = `<p><strong>No definition found for "${palabra}".</strong></p>`;
+        }
+      } catch (err) {
+        console.error(err);
+        resultado.innerHTML = `<p><strong>Error connecting to the dictionary.</strong></p>`;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "diccionario-api",
+  "version": "1.0.0",
+  "description": "API de definiciones en inglés usando dictionaryapi.dev",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["dictionary", "api", "express", "english", "definitions"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.11"
+  }
+}
