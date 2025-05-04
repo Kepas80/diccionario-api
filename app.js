@@ -1,23 +1,23 @@
 const express = require('express');
 const path = require('path');
-const cors = require('cors'); // ✅ Importa cors
+const cors = require('cors');
 
 const app = express();
 
-// ✅ Habilita CORS para cualquier origen
+// ✅ Habilitar CORS (para poder consumir desde tu frontend alojado externamente)
 app.use(cors());
 
-// Middleware para leer JSON en solicitudes POST
+// ✅ Middleware para leer JSON en solicitudes POST
 app.use(express.json());
 
-// Servir archivos estáticos desde la carpeta "public"
+// ✅ Servir archivos estáticos (por ejemplo, index.html en /public)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Ruta para las definiciones
+// ✅ Conectar la ruta del diccionario
 const definicionRouter = require('./routes/definicion');
 app.use('/definicion', definicionRouter);
 
-// Iniciar el servidor
+// ✅ Iniciar servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
